@@ -17,7 +17,7 @@ public class Target {
             ServerPlayerEntity player = player
             Target = player.getOffhandItem();
         }
-        else if (this == Targets.LEFT){
+        else if (this == Targets.RIGHT){
             ServerPlayerEntity player = player
             Target = player.getMainHandItem();
         }
