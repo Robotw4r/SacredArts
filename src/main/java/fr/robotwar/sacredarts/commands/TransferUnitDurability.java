@@ -1,13 +1,9 @@
 package fr.robotwar.sacredarts.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
-
-import fr.robotwar.sacredarts.arguments.ArtTarget;
-import net.minecraft.potion.Effect;
 
 public class TransferUnitDurability {
     public TransferUnitDurability(CommandDispatcher<CommandSource> dispatcher) {

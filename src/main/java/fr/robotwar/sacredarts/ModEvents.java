@@ -1,5 +1,6 @@
 package fr.robotwar.sacredarts;
 
+import fr.robotwar.sacredarts.commands.EnhanceArmament;
 import fr.robotwar.sacredarts.commands.GenerateLuminousElement;
 import fr.robotwar.sacredarts.commands.TransferUnitDurability;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -14,6 +15,7 @@ public class ModEvents {
     public static void onCommandsRegister(RegisterCommandsEvent event) {
         new TransferUnitDurability(event.getDispatcher());
         new GenerateLuminousElement(event.getDispatcher());
+        new EnhanceArmament(event.getDispatcher());
 
         ConfigCommand.register(event.getDispatcher());
     }

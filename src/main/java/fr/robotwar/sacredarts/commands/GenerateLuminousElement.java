@@ -29,9 +29,9 @@ public class GenerateLuminousElement {
     }
 
     private int lightItem(CommandSource source) throws CommandSyntaxException {
-        ServerPlayerEntity player = source.getPlayerOrException();
-        ItemStack mainHandItem = player.getMainHandItem();
-        mainHandItem.enchant(Enchantments.BANE_OF_ARTHROPODS, 0);
+        ServerPlayerEntity player = source.asPlayer();
+        ItemStack mainHandItem = player.getHeldItemMainhand();
+        mainHandItem.addEnchantment(Enchantments.BANE_OF_ARTHROPODS, 0);
         //RenderType.outline(true);
 
         return 1;
