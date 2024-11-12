@@ -1,5 +1,16 @@
-package com.example.examplemod;
+package net.robotwar.sacredarts;
 
+import com.mojang.authlib.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.components.ChatComponent;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.enchantment.effects.DamageEntity;
+import net.minecraft.world.level.EntityGetter;
+import net.neoforged.fml.loading.targets.NeoForgeClientLaunchHandler;
+import net.neoforged.neoforge.client.event.ClientChatEvent;
+import net.neoforged.neoforge.event.ServerChatEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -34,12 +45,14 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.Arrays;
+
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
-@Mod(ExampleMod.MODID)
-public class ExampleMod
+@Mod(SacredArts.MODID)
+public class SacredArts
 {
     // Define mod id in a common place for everything to reference
-    public static final String MODID = "examplemod";
+    public static final String MODID = "sacredarts";
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
     // Create a Deferred Register to hold Blocks which will all be registered under the "examplemod" namespace
@@ -69,7 +82,7 @@ public class ExampleMod
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
-    public ExampleMod(IEventBus modEventBus, ModContainer modContainer)
+    public SacredArts(IEventBus modEventBus, ModContainer modContainer)
     {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
@@ -115,10 +128,38 @@ public class ExampleMod
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event)
+    public void onServerMessage(ServerChatEvent event)
     {
-        // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
+        String text = event.getRawText().toUpperCase();
+        String parsed_text[] = text.split("\\s");
+        if((parsed_text[0].equals("SYSTEM")) && (parsed_text[1].equals("CALL"))) {
+            LOGGER.info("Command tried: "+text);
+            String[] command = Arrays.copyOfRange(parsed_text, 2, parsed_text.length);
+            switch(command[0]) {
+                case "GENERATE":
+                    LOGGER.info("Command not implemented yet");
+                    break;
+                case "TRANSFER":
+                    String source = command[3];
+                    String target = command[5];
+                    if(command[1].equals("HUMAN")) {
+                        LOGGER.info("non");
+                    }else if(command[1].equals("OBJECT")) {
+                        if(source.equals("LEFT")){
+                            Minecraft.getInstance().player.getOffhandItem().hurtAndBreak(10, event.getPlayer(), Minecraft.getInstance().player.getOffhandItem().getEquipmentSlot());
+                            Minecraft.getInstance().player.getMainHandItem().hurtAndBreak(-10, event.getPlayer(), Minecraft.getInstance().player.getMainHandItem().getEquipmentSlot());
+                        }else{
+                            Minecraft.getInstance().player.getOffhandItem().hurtAndBreak(-10, event.getPlayer(), Minecraft.getInstance().player.getOffhandItem().getEquipmentSlot());
+                            Minecraft.getInstance().player.getMainHandItem().hurtAndBreak(10, event.getPlayer(), Minecraft.getInstance().player.getMainHandItem().getEquipmentSlot());
+                        }
+                    }else{
+                    LOGGER.info("non");
+                    }
+                    break;
+                default:
+                    LOGGER.info("non");
+            }
+        }
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
